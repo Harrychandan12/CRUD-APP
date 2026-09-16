@@ -1,73 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Student Management</title>
+  <title>🎓 Student Management System</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+  <style>
+    body{
+      background: linear-gradient(135deg,#4facfe,#00f2fe);
+      font-family: Arial, sans-serif;
+    }
+    .card{
+      border-radius:20px;
+      box-shadow:0 8px 20px rgba(0,0,0,.2);
+    }
+    h1{
+      color:white;
+      text-align:center;
+      font-weight:bold;
+      margin:20px 0;
+    }
+    .table{
+      border-radius:15px;
+      overflow:hidden;
+    }
+    .btn-success{background:#00c853;border:none;}
+    .btn-warning{background:#ff9800;border:none;}
+    .btn-danger{background:#e53935;border:none;}
+    input{
+      border-radius:10px !important;
+    }
+  </style>
 </head>
-<body class="container mt-5">
 
-  <h2 class="text-center text-primary">Student Registration Form</h2>
+<body class="container py-4">
 
-  <!-- ADD STUDENT -->
-  <form action="/students" method="POST" class="mb-4">
-    <input type="text" name="name" placeholder="Name" class="form-control mb-2" required />
-    <input type="number" name="age" placeholder="Age" class="form-control mb-2" required />
-    <input type="text" name="course" placeholder="Course" class="form-control mb-2" required />
-    <input type="text" name="city" placeholder="City" class="form-control mb-2" required />
+  <h1>🎓 Student Management System</h1>
 
-    <!-- Password -->
-    <input type="password" name="password" placeholder="Admin Password" class="form-control mb-2" required />
+  <div class="card p-4 mb-4">
+    <h3 class="text-primary text-center">➕ Register Student</h3>
 
-    <button type="submit" class="btn btn-success">Add Student</button>
-  </form>
+    <form action="/students" method="POST">
+      <input type="text" name="name" placeholder="👤 Student Name" class="form-control mb-2" required>
+      <input type="number" name="age" placeholder="🎂 Age" class="form-control mb-2" required>
+      <input type="text" name="course" placeholder="📚 Course" class="form-control mb-2" required>
+      <input type="text" name="city" placeholder="🏙️ City" class="form-control mb-2" required>
+      <input type="password" name="password" placeholder="🔒 Admin Password" class="form-control mb-3" required>
 
-  <h2 class="text-center text-info">Student List</h2>
+      <button class="btn btn-success w-100">Add Student</button>
+    </form>
+  </div>
 
-  <table class="table table-bordered table-striped">
-    <thead class="table-dark">
-      <tr>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Course</th>
-        <th>City</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+  <div class="card p-4">
+    <h3 class="text-info text-center">📋 Student List</h3>
 
-    <tbody>
-      <% students.forEach(student => { %>
-      <tr>
-        <td><%= student.name %></td>
-        <td><%= student.age %></td>
-        <td><%= student.course %></td>
-        <td><%= student.city %></td>
+    <table class="table table-bordered table-hover text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>👤 Name</th>
+          <th>🎂 Age</th>
+          <th>📚 Course</th>
+          <th>🏙️ City</th>
+          <th>⚙️ Action</th>
+        </tr>
+      </thead>
 
-        <td>
-          <!-- UPDATE -->
-          <form action="/students/update/<%= student._id %>" method="POST" class="d-inline">
-            <input type="text" name="name" value="<%= student.name %>" class="form-control mb-1" />
-            <input type="number" name="age" value="<%= student.age %>" class="form-control mb-1" />
-            <input type="text" name="course" value="<%= student.course %>" class="form-control mb-1" />
-            <input type="text" name="city" value="<%= student.city %>" class="form-control mb-1" />
+      <tbody>
+        <% students.forEach(student => { %>
+        <tr>
+          <td><%= student.name %></td>
+          <td><%= student.age %></td>
+          <td><%= student.course %></td>
+          <td><%= student.city %></td>
 
-            <!-- Password -->
-            <input type="password" name="password" placeholder="Admin Password" class="form-control mb-1" required />
+          <td>
+            <form action="/students/update/<%= student._id %>" method="POST">
+              <input type="text" name="name" value="<%= student.name %>" class="form-control mb-1">
+              <input type="number" name="age" value="<%= student.age %>" class="form-control mb-1">
+              <input type="text" name="course" value="<%= student.course %>" class="form-control mb-1">
+              <input type="text" name="city" value="<%= student.city %>" class="form-control mb-1">
+              <input type="password" name="password" placeholder="🔒 Password" class="form-control mb-1" required>
 
-            <button type="submit" class="btn btn-warning btn-sm">Update</button>
-          </form>
+              <button class="btn btn-warning btn-sm w-100 mb-2">Update</button>
+            </form>
 
-          <!-- DELETE -->
-          <form action="/students/delete/<%= student._id %>" method="POST" class="d-inline mt-1">
-            <!-- Password -->
-            <input type="password" name="password" placeholder="Admin Password" class="form-control mb-1" required />
-
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-          </form>
-        </td>
-      </tr>
-      <% }) %>
-    </tbody>
-  </table>
+            <form action="/students/delete/<%= student._id %>" method="POST">
+              <input type="password" name="password" placeholder="🔒 Password" class="form-control mb-1" required>
+              <button class="btn btn-danger btn-sm w-100">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
 
 </body>
 </html>
