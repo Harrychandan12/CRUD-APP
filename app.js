@@ -13,7 +13,7 @@ app.set("view engine", "ejs");
 const mongoURI =
   process.env.MONGO_URI || "mongodb://127.0.0.1:27017/studentCB" || "mongodb://localhost:27017/studentCB";
 
-mongoose.connect("mongodb+srv://srivastavchandan178_db_user:xKiQJ9lvF9S7xfhO@cluster0.ur3hvpc.mongodb.net/studentCB?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("mongodb+srv://srivastavchandan178_db_user:Chandan12345@cluster0.ur3hvpc.mongodb.net/studentCB?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
