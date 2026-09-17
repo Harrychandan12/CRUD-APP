@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const Student = require("./models/student");
-const ejs = require("ejs");
+const User = require("./models/user"); // Capital U
 
 const app = express();
 
@@ -14,11 +14,29 @@ app.set("view engine", "ejs");
 
 // MongoDB Connection
 mongoose.connect("mongodb+srv://srivastavchandan178_db_user:Chandan12345@cluster0.ur3hvpc.mongodb.net/studentCB?retryWrites=true&w=majority&appName=Cluster0")
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error(err));
 
-// READ
-app.get("/", async (req, res) => {
+// Login Page
+app.get("/", (req, res) => {
+  res.render("login");
+});
+
+// Login Check
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email, password });
+
+  if (user) {
+    res.redirect("/students");
+  } else {
+    res.send("Invalid Email or Password");
+  }
+});
+
+// CRUD Home
+app.get("/students", async (req, res) => {
   const students = await Student.find();
   res.render("index", { students });
 });
@@ -31,7 +49,7 @@ app.post("/students", async (req, res) => {
 
   const { name, age, course, city } = req.body;
   await Student.create({ name, age, course, city });
-  res.redirect("/");
+  res.redirect("/students");
 });
 
 // UPDATE
@@ -42,7 +60,7 @@ app.post("/students/update/:id", async (req, res) => {
 
   const { name, age, course, city } = req.body;
   await Student.findByIdAndUpdate(req.params.id, { name, age, course, city });
-  res.redirect("/");
+  res.redirect("/students");
 });
 
 // DELETE
@@ -52,12 +70,11 @@ app.post("/students/delete/:id", async (req, res) => {
   }
 
   await Student.findByIdAndDelete(req.params.id);
-  res.redirect("/");
+  res.redirect("/students");
 });
 
-// Render Port
+// Server
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
