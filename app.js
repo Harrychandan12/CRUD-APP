@@ -2,15 +2,16 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const Student = require("./models/student");
-const User = require("./models/user"); // Capital U
+const User = require("./models/user");
 
 const app = express();
 
-// Admin Password
-const ADMIN_PASSWORD = "Chandan123";
-
+// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+
+// Admin Password
+const ADMIN_PASSWORD = "Chandan123";
 
 // MongoDB Connection
 mongoose.connect("mongodb+srv://srivastavchandan178_db_user:Chandan12345@cluster0.ur3hvpc.mongodb.net/studentCB?retryWrites=true&w=majority&appName=Cluster0")
@@ -20,6 +21,19 @@ mongoose.connect("mongodb+srv://srivastavchandan178_db_user:Chandan12345@cluster
 // Login Page
 app.get("/", (req, res) => {
   res.render("login");
+});
+
+// Register User
+app.post("/register", async (req, res) => {
+  const { email, password } = req.body;
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.send("User already exists");
+  }
+
+  await User.create({ email, password });
+  res.redirect("/");
 });
 
 // Login Check
